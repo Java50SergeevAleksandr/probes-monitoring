@@ -103,5 +103,6 @@
 		<module>SensorRangeProvider</module>
 		<module>sensorEmailsProvider</module>
 		<module>avg-populator</module>
+		<module>admin-console</module>
 	</modules>
 </project>

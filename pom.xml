@@ -96,5 +96,6 @@
 	<modules>
 		<module>analyzer</module>
 		<module>SensorRangeProvider</module>
+		<module>sensorEmailsProvider</module>
 	</modules>
 </project>

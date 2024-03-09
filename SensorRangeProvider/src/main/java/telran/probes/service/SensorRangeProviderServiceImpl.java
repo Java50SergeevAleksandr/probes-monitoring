@@ -20,6 +20,7 @@ public class SensorRangeProviderServiceImpl implements SensorRangeProviderServic
 	@Override
 	public Range getSensorRange(long sensorId) {
 		RangeDoc rd = rangeRepo.findById(sensorId).orElseThrow(() -> new NotFoundException("wrong ID"));
+		log.debug("--- Debug SensorRangeProviderServiceImpl -> RangeDoc: {} has been found", rd);
 		return rd.build();
 	}
 

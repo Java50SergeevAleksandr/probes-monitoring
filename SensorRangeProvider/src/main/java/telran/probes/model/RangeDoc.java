@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Getter;
 import telran.probes.dto.Range;
 
-@Document(collection = "range")
+@Document(collection = "ranges")
 @Getter
 public class RangeDoc {
 	@Id

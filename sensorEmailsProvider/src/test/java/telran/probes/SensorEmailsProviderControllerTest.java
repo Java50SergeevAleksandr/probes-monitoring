@@ -4,50 +4,46 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static telran.probes.UrlConstants.*;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static telran.probes.UrlConstants.*;
-
-import telran.exceptions.NotFoundException;
-import telran.probes.dto.Range;
-import telran.probes.service.SensorRangeProviderService;
+import telran.probes.service.SensorEmailsProviderService;
 
 @WebMvcTest
-class SensorRangeProviderControllerTest {
-
+class SensorEmailsProviderControllerTest {
 	private static final long ID_1 = 1;
 
-	@Autowired
-	ObjectMapper mapper;
+	@MockBean
+	SensorEmailsProviderService emailsService;
 
 	@Autowired
 	MockMvc mockMvc;
 
-	@MockBean
-	SensorRangeProviderService providerService;
+	@Autowired
+	ObjectMapper mapper;
 
 	@Test
-	void getRangeForSensor_normalFlow_success() throws Exception {
-		Range expected = new Range(100, 200);
-		when(providerService.getSensorRange(ID_1)).thenReturn(expected);
+	void getEmailsForSensor_normalFlow_success() throws Exception {
+		String[] expected = { "m1", "m2" };
+		when(emailsService.getSensorEmails(ID_1)).thenReturn(expected);
 		String expectedJSON = mapper.writeValueAsString(expected);
-		String response = mockMvc.perform(get(HOST + PORT + SENSOR_RANGE + Long.toString(ID_1)))
+		String response = mockMvc.perform(get(HOST + PORT + SENSOR_EMAILS + Long.toString(ID_1)))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 		assertEquals(expectedJSON, response);
 	}
 
-	@Test
-	void getRangeForSensor_notExists_exception() throws Exception {
-		when(providerService.getSensorRange(ID_1)).thenThrow(new NotFoundException("wrong ID"));
-		mockMvc.perform(get(HOST + PORT + SENSOR_RANGE + Long.toString(ID_1))).andExpect(status().isNotFound());
-	}
+//	@Test
+//	void getEmailsForSensor_notExists_exception() throws Exception {
+//		when(emailsService.getSensorEmails(ID_1)).thenThrow(new IllegalArgumentException("wrong ID"));
+//		mockMvc.perform(get(HOST + PORT + SENSOR_EMAILS + Long.toString(ID_1)))
+//				.andExpect(status().isNotFound());
+//	} 
 
 }

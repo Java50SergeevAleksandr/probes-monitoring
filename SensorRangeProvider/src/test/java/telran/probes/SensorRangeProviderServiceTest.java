@@ -22,7 +22,7 @@ class SensorRangeProviderServiceTest {
 
 	@Test
 	void getSensorRange_normalFlow_success() {
-		rangeRepo.insert(new RangeDoc(0, 100, 200));		
+		rangeRepo.insert(new RangeDoc(0, 100, 200));
 		assertEquals(new Range(100, 200), providerService.getSensorRange(0));
 	}
 

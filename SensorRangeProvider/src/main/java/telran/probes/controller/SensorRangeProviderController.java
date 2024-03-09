@@ -20,7 +20,7 @@ public class SensorRangeProviderController {
 	Range getRangeForSensor(@PathVariable(PROBE_ID) long sensorId) {
 		log.debug("--- Debug SensorRangeProviderController -> getRangeForSensor for probe {}", sensorId);
 		var res = providerService.getSensorRange(sensorId);
-		log.debug("--- Debug SensorRangeProviderController ->res {}", res);
+		log.debug("--- Debug SensorRangeProviderController -> res {}", res);
 		return res;
 	}
 }

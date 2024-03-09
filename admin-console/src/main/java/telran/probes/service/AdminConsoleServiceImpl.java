@@ -48,8 +48,9 @@ public class AdminConsoleServiceImpl implements AdminConsoleService {
 		long id = sensorRange.id();
 		Query query = new Query(Criteria.where("id").is(id));
 		Update update = new Update();
-		update.push("maxValue", sensorRange.range().maxValue());
-		update.push("minValue", sensorRange.range().minValue());
+		update.set("maxValue", sensorRange.range().maxValue());
+		update.set("minValue", sensorRange.range().minValue());
+
 		RangeDoc rangeDoc = mongoTemplate.findAndModify(query, update, options, RangeDoc.class);
 
 		if (rangeDoc == null) {
@@ -78,8 +79,21 @@ public class AdminConsoleServiceImpl implements AdminConsoleService {
 
 	@Override
 	public SensorEmails updateSensorEmails(SensorEmails sensorEmails) {
-		// TODO Auto-generated method stub
-		return null;
+		long id = sensorEmails.id();
+		Query query = new Query(Criteria.where("id").is(id));
+		Update update = new Update();
+		update.set("mails", sensorEmails.mails());
+
+		EmailsDoc emailsDoc = mongoTemplate.findAndModify(query, update, options, EmailsDoc.class);
+
+		if (emailsDoc == null) {
+			log.error("--- Debug AdminConsoleServiceImpl -> Sensor with id: {} not found", id);
+			throw new SensorNotFoundException();
+		}
+
+		log.debug("--- Debug AdminConsoleServiceImpl -> Sensor emails: {} has been updated for sensor with id: {}",
+				sensorEmails, id);
+		return new SensorEmails(id, emailsDoc.getMails());
 	}
 
 }

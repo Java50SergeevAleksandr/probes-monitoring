@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-
+import telran.probes.exceptions.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import telran.probes.service.SensorEmailsProviderService;
@@ -39,11 +39,10 @@ class SensorEmailsProviderControllerTest {
 		assertEquals(expectedJSON, response);
 	}
 
-//	@Test
-//	void getEmailsForSensor_notExists_exception() throws Exception {
-//		when(emailsService.getSensorEmails(ID_1)).thenThrow(new IllegalArgumentException("wrong ID"));
-//		mockMvc.perform(get(HOST + PORT + SENSOR_EMAILS + Long.toString(ID_1)))
-//				.andExpect(status().isNotFound());
-//	} 
+	@Test
+	void getEmailsForSensor_notExists_exception() throws Exception {
+		when(emailsService.getSensorEmails(ID_1)).thenThrow(new SensorNotFoundException());
+		mockMvc.perform(get(HOST + PORT + SENSOR_EMAILS + Long.toString(ID_1))).andExpect(status().isNotFound());
+	}
 
 }

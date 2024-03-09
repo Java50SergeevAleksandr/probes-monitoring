@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static telran.probes.UrlConstants.*;
 
-import telran.exceptions.NotFoundException;
+import telran.probes.exceptions.*;
 import telran.probes.dto.Range;
 import telran.probes.service.SensorRangeProviderService;
 
@@ -46,7 +46,7 @@ class SensorRangeProviderControllerTest {
 
 	@Test
 	void getRangeForSensor_notExists_exception() throws Exception {
-		when(providerService.getSensorRange(ID_1)).thenThrow(new NotFoundException("wrong ID"));
+		when(providerService.getSensorRange(ID_1)).thenThrow(new SensorNotFoundException());
 		mockMvc.perform(get(HOST + PORT + SENSOR_RANGE + Long.toString(ID_1))).andExpect(status().isNotFound());
 	}
 

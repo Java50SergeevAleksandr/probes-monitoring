@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import telran.exceptions.NotFoundException;
+import telran.probes.exceptions.*;
 import telran.probes.dto.Range;
 import telran.probes.model.RangeDoc;
 import telran.probes.repo.SernsorRangeRepo;
@@ -19,7 +19,7 @@ public class SensorRangeProviderServiceImpl implements SensorRangeProviderServic
 
 	@Override
 	public Range getSensorRange(long sensorId) {
-		RangeDoc rd = rangeRepo.findById(sensorId).orElseThrow(() -> new NotFoundException("wrong ID"));
+		RangeDoc rd = rangeRepo.findById(sensorId).orElseThrow(() -> new SensorNotFoundException());
 		log.debug("--- Debug SensorRangeProviderServiceImpl -> RangeDoc: {} has been found", rd);
 		return rd.build();
 	}

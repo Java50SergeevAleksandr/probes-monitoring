@@ -2,7 +2,7 @@ package telran.probes.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import telran.probes.exceptions.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import telran.probes.model.EmailsDoc;
@@ -17,7 +17,7 @@ public class SensorEmailsProviderServiceImpl implements SensorEmailsProviderServ
 
 	@Override
 	public String[] getSensorEmails(long sensorId) {
-		EmailsDoc res = emailsRepo.findById(sensorId).orElseThrow(() -> new IllegalArgumentException("wrong ID"));
+		EmailsDoc res = emailsRepo.findById(sensorId).orElseThrow(() -> new SensorNotFoundException());
 		log.debug("--- Debug SensorEmailsProviderServiceImpl -> EmailsDoc: {} has been found", res);
 		return res.getMails();
 	}

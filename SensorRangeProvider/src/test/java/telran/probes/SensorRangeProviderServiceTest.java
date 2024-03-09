@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import telran.exceptions.NotFoundException;
+import telran.probes.exceptions.*;
 import telran.probes.dto.Range;
 import telran.probes.model.RangeDoc;
 import telran.probes.repo.SernsorRangeRepo;
@@ -28,6 +28,6 @@ class SensorRangeProviderServiceTest {
 
 	@Test
 	void getSensorRange_notExist_exception() throws Exception {
-		assertThrowsExactly(NotFoundException.class, () -> providerService.getSensorRange(1));
+		assertThrowsExactly(SensorNotFoundException.class, () -> providerService.getSensorRange(1));
 	}
 }

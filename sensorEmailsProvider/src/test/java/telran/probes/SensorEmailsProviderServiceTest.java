@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import telran.probes.exceptions.*;
 import telran.probes.model.EmailsDoc;
 
 import telran.probes.repo.SensorEmailsRepo;
@@ -27,9 +27,9 @@ class SensorEmailsProviderServiceTest {
 		assertArrayEquals(mails, emailsService.getSensorEmails(1));
 	}
 
-//	@Test
-//	void getSensorEmails_notExist_exception() throws Exception {
-//		assertThrowsExactly(NotFoundException.class, () -> emailsService.getSensorEmails(1));
-//	}
+	@Test
+	void getSensorEmails_notExist_exception() throws Exception {
+		assertThrowsExactly(SensorNotFoundException.class, () -> emailsService.getSensorEmails(0));
+	}
 
 }

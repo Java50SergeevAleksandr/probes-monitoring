@@ -102,5 +102,6 @@
 		<module>analyzer</module>
 		<module>SensorRangeProvider</module>
 		<module>sensorEmailsProvider</module>
+		<module>avg-populator</module>
 	</modules>
 </project>

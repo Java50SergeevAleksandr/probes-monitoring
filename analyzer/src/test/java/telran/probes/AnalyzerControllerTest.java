@@ -46,7 +46,7 @@ class AnalyzerControllerTest {
 	OutputDestination consumer;
 
 	ObjectMapper mapper = new ObjectMapper();
-	
+
 	private String consumerBindingName = "analyzerConsumer-in-0";
 	private String producerBindingName = "analyzerProducer-out-0";
 

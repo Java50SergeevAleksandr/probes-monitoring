@@ -27,6 +27,11 @@ public class AnalyzerAppl {
 	}
 
 	@Bean
+	Consumer<SensorUpdateData> updateRangeConsumer() {
+		return SensorUpdateData -> clientService.updateProcessing(SensorUpdateData);
+	}
+
+	@Bean
 	Consumer<ProbeData> analyzerConsumer() {
 		return probeData -> probeDataAnalyzing(probeData);
 	}

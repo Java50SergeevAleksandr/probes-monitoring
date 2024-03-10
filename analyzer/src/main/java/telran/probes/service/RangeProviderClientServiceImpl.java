@@ -1,18 +1,18 @@
 package telran.probes.service;
 
-import java.net.URI;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
+
 import org.springframework.web.client.RestTemplate;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import telran.probes.dto.Range;
+import telran.probes.dto.SensorUpdateData;
 
 @Service
 @RequiredArgsConstructor
@@ -21,22 +21,36 @@ public class RangeProviderClientServiceImpl implements RangeProviderClientServic
 	final RestTemplate restTemplate;
 	final ServiceConfiguration serviceConfiguration;
 
+	HashMap<Long, Range> cashe = new LinkedHashMap<Long, Range>(16, 0.74f, true);
+
+	@Override
+	public void updateProcessing(SensorUpdateData data) {
+		Range[] oldValue = { null };
+		Range[] newValue = { null };
+		log.debug("--- Debug RangeProviderClientServiceImpl -> updateProcessing , SensorUpdateData has range: {}",
+				data.range());
+
+		if (data.range() != null) {
+			cashe.computeIfPresent(data.id(), (id, v) -> {
+				oldValue[0] = v;
+				newValue[0] = data.range();
+				return newValue[0];
+			});
+			log.debug(
+					"--- Debug RangeProviderClientServiceImpl -> updateProcessing,  for id: {} , old value: {}, new value in cashe map: {}",
+					data.id(), oldValue[0], newValue[0]);
+		}
+
+	}
+
 	@Override
 	public Range getRange(long sensorId) {
-		HashMap<Long, Range> cashe = new LinkedHashMap<Long, Range>(16, 0.74f, true);
-		Range range = cashe.get(sensorId);
+		Range range = cashe.computeIfAbsent(sensorId, id -> serviceRequest(sensorId));
 		log.debug("--- Debug RangeProviderClientServiceImpl -> range value in cashe map: {}", range);
 
 		if (range == null) {
-			range = serviceRequest(sensorId);
-
-			if (range != null) {
-				cashe.put(sensorId, range);
-				log.debug("--- Debug RangeProviderClientServiceImpl -> put in cashe map: {}", range);
-			} else {
-				range = new Range(MIN_DEFAULT_VALUE, MAX_DEFAULT_VALUE);
-				log.warn("--- Debug RangeProviderClientServiceImpl -> set default range value: {}", range);
-			}
+			range = new Range(MIN_DEFAULT_VALUE, MAX_DEFAULT_VALUE);
+			log.warn("--- Debug RangeProviderClientServiceImpl -> set default range value: {}", range);
 		}
 
 		return range;

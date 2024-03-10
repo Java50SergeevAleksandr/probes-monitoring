@@ -5,8 +5,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-import java.net.URI;
-
 import telran.probes.dto.*;
 import org.junit.jupiter.api.*;
 import org.mockito.invocation.InvocationOnMock;
@@ -19,12 +17,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.MessageHeaders;
+
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import jakarta.validation.constraints.NotNull;
 import telran.probes.service.RangeProviderClientService;
 
 @SpringBootTest
@@ -42,10 +39,13 @@ class AnalyzerServiceTest {
 			RangeProviderClientService.MAX_DEFAULT_VALUE);
 	private static final long SENSOR_ID_UNAVAILABLE = 170;
 	private static final Range RANGE_UPDATED = new Range(MIN_VALUE + 10, MAX_VALUE + 10);
+	
 	@Autowired
 	InputDestination producer;
+	
 	@Autowired
 	RangeProviderClientService providerService;
+	
 	@MockBean
 	RestTemplate restTemplate;
 	private String updateBindingName = "updateRangeConsumer-in-0";
@@ -93,7 +93,7 @@ class AnalyzerServiceTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	void remoteWebServiceAnavailable() {
+	void remoteWebServiceUnavailable() {
 		when(restTemplate.exchange(anyString(), any(HttpMethod.class), any(), any(Class.class)))
 				.thenThrow(new RestClientException("Service is unavailable"));
 		assertEquals(RANGE_DEFAULT, providerService.getRange(SENSOR_ID_UNAVAILABLE));
@@ -101,7 +101,6 @@ class AnalyzerServiceTest {
 
 	@Test
 	void updateRangeSensorInMap() throws InterruptedException {
-
 		producer.send(new GenericMessage<SensorUpdateData>(new SensorUpdateData(SENSOR_ID, RANGE_UPDATED, null)),
 				updateBindingName);
 		Thread.sleep(100);

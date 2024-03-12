@@ -26,7 +26,7 @@ public class AvgReducerServiceImpl implements AvgReducerService {
 		Long sensorId = probeData.id();
 		ProbesList probesList = probesListRepo.findById(sensorId).orElse(null);
 
-		if (probesList == null || probesList.getValue() == null) {
+		if (probesList == null) {
 			probesList = new ProbesList(sensorId);
 			log.debug("--- AvgReducerServiceImpl -> either probesList is null or value of probesList is null");
 		}

@@ -105,5 +105,6 @@
 		<module>avg-populator</module>
 		<module>admin-console</module>
 		<module>email-notifier</module>
+		<module>avg-reducer</module>
 	</modules>
 </project>

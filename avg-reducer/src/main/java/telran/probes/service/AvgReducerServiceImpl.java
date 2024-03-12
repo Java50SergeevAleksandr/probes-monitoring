@@ -28,7 +28,7 @@ public class AvgReducerServiceImpl implements AvgReducerService {
 
 		if (probesList == null || probesList.getValue() == null) {
 			probesList = new ProbesList(sensorId);
-			log.debug("---AvgReducerServiceImpl -> either probesList is null or value of probesList is null");
+			log.debug("--- AvgReducerServiceImpl -> either probesList is null or value of probesList is null");
 		}
 
 		List<Double> listProbeValues = probesList.getValue();
@@ -36,7 +36,7 @@ public class AvgReducerServiceImpl implements AvgReducerService {
 
 		if (listProbeValues.size() >= reducingSize) {
 			res = listProbeValues.stream().mapToDouble(v -> v).average().getAsDouble();
-			log.debug("---AvgReducerServiceImpl -> average value for reducing size {} is {}", reducingSize, res);
+			log.debug("--- AvgReducerServiceImpl -> average value for reducing size {} is {}", reducingSize, res);
 			listProbeValues.clear();
 		}
 

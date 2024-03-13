@@ -3,7 +3,9 @@ package telran.probes.service;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.function.Consumer;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,11 @@ public class EmailsProviderClientServiceImpl implements EmailsProviderClientServ
 
 	HashMap<Long, String[]> cashe = new LinkedHashMap<Long, String[]>(16, 0.74f, true);
 
-	@Override
+	@Bean
+	Consumer<SensorUpdateData> updateEmailsConsumer() {
+		return this::updateProcessing;
+	}
+
 	public void updateProcessing(SensorUpdateData data) {
 		String[] emails = data.emails();
 		log.debug("--- Debug EmailsProviderClientServiceImpl -> updateProcessing , SensorUpdateData has emails: {}",

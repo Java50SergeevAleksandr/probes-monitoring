@@ -13,6 +13,7 @@ import telran.probes.dto.SensorEmails;
 import telran.probes.dto.SensorRange;
 import telran.probes.exceptions.SensorIllegalStateException;
 import telran.probes.exceptions.SensorNotFoundException;
+import telran.probes.model.EmailsDoc;
 import telran.probes.model.RangeDoc;
 import telran.probes.repo.SensorEmailsRepo;
 import telran.probes.repo.SensorRangesRepo;
@@ -22,8 +23,7 @@ import static telran.probes.exceptionMessages.ExceptionMessages.*;
 @SpringBootTest
 @RequiredArgsConstructor
 class AdminConsoleServiceTest {
-	private static final long ID_1 = 1;
-	private static final long ID_2 = 2;
+	private static final long ID_1 = 1;	
 
 	@Autowired
 	SensorEmailsRepo emailsRepo;
@@ -53,7 +53,6 @@ class AdminConsoleServiceTest {
 				.orElseThrow(() -> new SensorIllegalStateException(SENSOR_RANGE_ALREADY_EXISTS));
 		assertEquals(range, rangeDoc.build());
 		assertEquals(ID_1, rangeDoc.getId());
-
 	}
 
 	@Test
@@ -73,7 +72,7 @@ class AdminConsoleServiceTest {
 	}
 
 	@Test
-	void updateSensorRange_alreadyExists_exception() {
+	void updateSensorRange_notFound_exception() {
 		assertThrowsExactly(SensorNotFoundException.class, () -> service.updateSensorRange(sensorRange));
 	}
 
@@ -84,5 +83,26 @@ class AdminConsoleServiceTest {
 		SensorEmails sensorEmailsNew = new SensorEmails(ID_1, mailsNew);
 		assertEquals(sensorEmailsNew, service.updateSensorEmails(sensorEmailsNew));
 		assertArrayEquals(mailsNew, emailsRepo.findById(ID_1).orElseThrow().getMails());
+	}
+
+	@Test
+	void updateSensorEmails_notFound_exception() {
+		assertThrowsExactly(SensorNotFoundException.class, () -> service.updateSensorEmails(sensorEmails));
+	}
+
+	@Test
+	void addSensorEmails_alreadyExists_exception() {
+		service.addSensorEmails(sensorEmails);
+		assertThrowsExactly(SensorIllegalStateException.class, () -> service.addSensorEmails(sensorEmails),
+				SENSOR_EMAILS_ALREADY_EXISTS);
+	}
+
+	@Test
+	void addSensorEmails_normalFlow_success() {
+		assertEquals(sensorEmails, service.addSensorEmails(sensorEmails));
+		EmailsDoc emailDoc = emailsRepo.findById(ID_1)
+				.orElseThrow(() -> new SensorIllegalStateException(SENSOR_EMAILS_ALREADY_EXISTS));
+		assertArrayEquals(mails, emailDoc.getMails());
+		assertEquals(ID_1, emailDoc.getId());
 	}
 }

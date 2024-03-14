@@ -25,6 +25,8 @@ class SensorRangeProviderControllerTest {
 
 	private static final long ID_1 = 1;
 
+	private static final String URL = HOST + PORT + SENSOR_RANGE + "/" + Long.toString(ID_1);
+
 	@Autowired
 	ObjectMapper mapper;
 
@@ -39,15 +41,15 @@ class SensorRangeProviderControllerTest {
 		Range expected = new Range(100, 200);
 		when(providerService.getSensorRange(ID_1)).thenReturn(expected);
 		String expectedJSON = mapper.writeValueAsString(expected);
-		String response = mockMvc.perform(get(HOST + PORT + SENSOR_RANGE + Long.toString(ID_1)))
-				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		String response = mockMvc.perform(get(URL)).andExpect(status().isOk()).andReturn().getResponse()
+				.getContentAsString();
 		assertEquals(expectedJSON, response);
 	}
 
 	@Test
 	void getRangeForSensor_notExists_exception() throws Exception {
 		when(providerService.getSensorRange(ID_1)).thenThrow(new SensorNotFoundException());
-		mockMvc.perform(get(HOST + PORT + SENSOR_RANGE + Long.toString(ID_1))).andExpect(status().isNotFound());
+		mockMvc.perform(get(URL)).andExpect(status().isNotFound());
 	}
 
 }

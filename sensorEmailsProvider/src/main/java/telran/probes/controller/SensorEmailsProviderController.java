@@ -17,7 +17,7 @@ import java.util.Arrays;
 public class SensorEmailsProviderController {
 	final SensorEmailsProviderService providerService;
 
-	@GetMapping(SENSOR_EMAILS + "{" + PROBE_ID + "}")
+	@GetMapping(SENSOR_EMAILS + "/{" + PROBE_ID + "}")
 	String[] getEmailsForSensor(@PathVariable(PROBE_ID) long sensorId) {
 		log.debug("--- Debug SensorEmailsProviderController -> getEmailsForSensor for probe {}", sensorId);
 		String[] res = providerService.getSensorEmails(sensorId);

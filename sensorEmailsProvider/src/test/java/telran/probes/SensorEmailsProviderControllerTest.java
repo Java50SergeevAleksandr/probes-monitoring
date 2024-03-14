@@ -14,11 +14,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import telran.probes.exceptions.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.extern.slf4j.Slf4j;
 import telran.probes.service.SensorEmailsProviderService;
 
 @WebMvcTest
+@Slf4j
 class SensorEmailsProviderControllerTest {
 	private static final long ID_1 = 1;
+
+	String url = HOST + PORT + SENSOR_EMAILS + "/" + Long.toString(ID_1);
 
 	@MockBean
 	SensorEmailsProviderService emailsService;
@@ -34,15 +38,17 @@ class SensorEmailsProviderControllerTest {
 		String[] expected = { "m1", "m2" };
 		when(emailsService.getSensorEmails(ID_1)).thenReturn(expected);
 		String expectedJSON = mapper.writeValueAsString(expected);
-		String response = mockMvc.perform(get(HOST + PORT + SENSOR_EMAILS + Long.toString(ID_1)))
-				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		log.debug(url);
+
+		String response = mockMvc.perform(get(url)).andExpect(status().isOk()).andReturn().getResponse()
+				.getContentAsString();
 		assertEquals(expectedJSON, response);
 	}
 
 	@Test
 	void getEmailsForSensor_notExists_exception() throws Exception {
 		when(emailsService.getSensorEmails(ID_1)).thenThrow(new SensorNotFoundException());
-		mockMvc.perform(get(HOST + PORT + SENSOR_EMAILS + Long.toString(ID_1))).andExpect(status().isNotFound());
+		mockMvc.perform(get(url)).andExpect(status().isNotFound());
 	}
 
 }

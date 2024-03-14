@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.stream.binder.test.InputDestination;
@@ -53,7 +54,9 @@ class AvgReducerControllerTest {
 	}
 
 	private String consumerBindingName = "avgReducerConsumer-in-0";
-	private String producerBindingName = "avgReducerProducer-out-0";
+	
+	@Value("${app.avg.reducer.producer.binding.name}")
+	String producerBindingName;
 
 	@Test
 	void noAvgValue_success() {

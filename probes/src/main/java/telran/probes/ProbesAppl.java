@@ -1,26 +1,30 @@
-package probes;
+package telran.probes;
 
 import java.util.function.Supplier;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import telran.probes.service.ProbesService;
 import telran.probes.dto.ProbeData;
 
-@SpringBootApplication
+@Configuration
 @Slf4j
+@RequiredArgsConstructor
 public class ProbesAppl {
-	@Value("${app.probes.sleep.timeout:10000}")
-	private static final long TIMEOUT = 0;
+
+	final StreamBridge streamBridge;
+	final ProbesService probesService;
+
+	private String producerBindingName = "probesSupplier-out-0";
 
 	public static void main(String[] args) throws InterruptedException {
 		ConfigurableApplicationContext ctx = SpringApplication.run(ProbesAppl.class, args);
-		Thread.sleep(TIMEOUT);
-		ctx.close();
 	}
 
 	@Bean
@@ -33,7 +37,9 @@ public class ProbesAppl {
 	}
 
 	private ProbeData getProbeData() {
-		// TODO Auto-generated method stub
-		return null;
+		ProbeData res = probesService.getRandomProbeData();
+		streamBridge.send(producerBindingName, res);
+		log.debug("--- Debug ProbesAppl -> Probe data: {} has been sent to: {}", res, producerBindingName);
+		return res;
 	}
 }

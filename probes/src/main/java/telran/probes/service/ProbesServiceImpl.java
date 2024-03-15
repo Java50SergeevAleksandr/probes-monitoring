@@ -31,7 +31,7 @@ public class ProbesServiceImpl implements ProbesService {
 		long id = getRandomId();
 		Range range = rangesMap.get(id);
 		return new ProbeData(id,
-				getRandomInt(1, 100) < probesConfiguration.getDeviationPercent() ? getRandomDeviation(range)
+				getRandomInt(1, 101) <= probesConfiguration.getDeviationPercent() ? getRandomDeviation(range)
 						: getRandomNormalValue(range),
 				System.currentTimeMillis());
 	}
@@ -41,7 +41,7 @@ public class ProbesServiceImpl implements ProbesService {
 	}
 
 	private double getRandomDeviation(Range range) {
-		return getRandomInt(1, 100) < probesConfiguration.getNegativeDeviationPercent() ? getLessMin(range.minValue())
+		return getRandomInt(1, 101) <= probesConfiguration.getNegativeDeviationPercent() ? getLessMin(range.minValue())
 				: getGreaterMax(range.maxValue());
 	}
 

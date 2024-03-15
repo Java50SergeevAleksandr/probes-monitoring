@@ -54,13 +54,13 @@ public class ProbesTest {
 		do {
 			message = consumer.receive(10, bindingName);
 			count++;
-			ProbeData data = null;
+			ProbeData probeData = null;
 
 			if (message != null) {
-				data = mapper.readValue(message.getPayload(), ProbeData.class);
+				probeData = mapper.readValue(message.getPayload(), ProbeData.class);
 			}
 
-			log.debug("--- Debug ProbesTest -> receive Probe data: {} ", data);
+			log.debug("--- Debug ProbesTest -> receive Probe data: {} ", probeData);
 		} while (message != null);
 
 		log.debug("--- Debug ProbesTest -> number of messages received {} ", count);

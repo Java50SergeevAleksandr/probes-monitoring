@@ -13,19 +13,12 @@ import telran.probes.dto.SensorRange;
 @NoArgsConstructor
 public class RangeDoc {
 	@Id
-	long id;
+	long id;	
 
-	double minValue;
-	double maxValue;
-
-	public Range build() {
-		return new Range(minValue, maxValue);
-	}
+	Range range;
 
 	public RangeDoc(SensorRange sensorRange) {
-
 		this.id = sensorRange.id();
-		this.minValue = sensorRange.range().minValue();
-		this.maxValue = sensorRange.range().maxValue();
+		this.range = sensorRange.range();
 	}
 }

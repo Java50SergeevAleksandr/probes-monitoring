@@ -50,8 +50,8 @@ class AdminConsoleServiceTest {
 	void addSensorRange_normalFlow_success() {
 		assertEquals(sensorRange, service.addSensorRange(sensorRange));
 		RangeDoc rangeDoc = rangesRepo.findById(ID_1)
-				.orElseThrow(() -> new SensorIllegalStateException(SENSOR_RANGE_ALREADY_EXISTS));
-		assertEquals(range, rangeDoc.build());
+				.orElseThrow(() -> new SensorIllegalStateException(0, null));
+		assertEquals(range, rangeDoc.getRange());
 		assertEquals(ID_1, rangeDoc.getId());
 	}
 
@@ -68,7 +68,7 @@ class AdminConsoleServiceTest {
 		Range rangeNew = new Range(10, 20);
 		SensorRange sensorRangeNew = new SensorRange(ID_1, rangeNew);
 		assertEquals(sensorRangeNew, service.updateSensorRange(sensorRangeNew));
-		assertEquals(rangeNew, rangesRepo.findById(ID_1).orElseThrow().build());
+		assertEquals(rangeNew, rangesRepo.findById(ID_1).orElseThrow().getRange());
 	}
 
 	@Test
@@ -101,7 +101,7 @@ class AdminConsoleServiceTest {
 	void addSensorEmails_normalFlow_success() {
 		assertEquals(sensorEmails, service.addSensorEmails(sensorEmails));
 		EmailsDoc emailDoc = emailsRepo.findById(ID_1)
-				.orElseThrow(() -> new SensorIllegalStateException(SENSOR_EMAILS_ALREADY_EXISTS));
+				.orElseThrow(() -> new SensorIllegalStateException(0, null));
 		assertArrayEquals(mails, emailDoc.getMails());
 		assertEquals(ID_1, emailDoc.getId());
 	}

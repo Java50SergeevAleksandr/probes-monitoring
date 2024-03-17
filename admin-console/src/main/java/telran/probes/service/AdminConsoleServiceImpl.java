@@ -27,7 +27,10 @@ public class AdminConsoleServiceImpl implements AdminConsoleService {
 	final SensorEmailsRepo emailsRepo;
 	final SensorRangesRepo rangesRepo;
 	final MongoTemplate mongoTemplate;
-
+	
+	String collectionNameRanges = "sensor_ranges";
+	String collectionNameMails = "sensor_emails";
+	
 	FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(false);
 
 	@Override
@@ -37,7 +40,7 @@ public class AdminConsoleServiceImpl implements AdminConsoleService {
 			mongoTemplate.insert(new RangeDoc(sensorRange));
 		} catch (DuplicateKeyException e) {
 			log.error("--- Debug AdminConsoleServiceImpl -> Sensor range for a given sensor ID {}, already exists", id);
-			throw new SensorIllegalStateException(SENSOR_RANGE_ALREADY_EXISTS);
+			throw new SensorIllegalStateException(id, collectionNameRanges);
 		}
 		log.debug("--- Debug AdminConsoleServiceImpl -> Sensor range: {} has been added", sensorRange);
 		return sensorRange;
@@ -48,8 +51,7 @@ public class AdminConsoleServiceImpl implements AdminConsoleService {
 		long id = sensorRange.id();
 		Query query = new Query(Criteria.where("id").is(id));
 		Update update = new Update();
-		update.set("maxValue", sensorRange.range().maxValue());
-		update.set("minValue", sensorRange.range().minValue());
+		update.set("range", sensorRange.range());
 
 		RangeDoc rangeDoc = mongoTemplate.findAndModify(query, update, options, RangeDoc.class);
 
@@ -60,7 +62,7 @@ public class AdminConsoleServiceImpl implements AdminConsoleService {
 
 		log.debug("--- Debug AdminConsoleServiceImpl -> Sensor range {} has been updated for sensor with id: {}",
 				sensorRange, id);
-		return new SensorRange(id, rangeDoc.build());
+		return new SensorRange(id, rangeDoc.getRange());
 	}
 
 	@Override
@@ -71,7 +73,7 @@ public class AdminConsoleServiceImpl implements AdminConsoleService {
 		} catch (DuplicateKeyException e) {
 			log.error("--- Debug AdminConsoleServiceImpl -> Sensor emails for a given sensor ID {}, already exists",
 					id);
-			throw new SensorIllegalStateException(SENSOR_EMAILS_ALREADY_EXISTS);
+			throw new SensorIllegalStateException(id, collectionNameMails);
 		}
 		log.debug("--- Debug AdminConsoleServiceImpl -> Sensor emails: {} has been added", sensorEmails);
 		return sensorEmails;

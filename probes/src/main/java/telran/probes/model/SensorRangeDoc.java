@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import telran.probes.dto.Range;
 
-@Document(collection = "sensor_ranges")
+@Document(collection = "ranges")
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor

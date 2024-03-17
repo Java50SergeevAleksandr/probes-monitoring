@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import telran.probes.exceptions.*;
 import telran.probes.dto.Range;
+import telran.probes.dto.SensorRange;
 import telran.probes.model.RangeDoc;
 import telran.probes.repo.SernsorRangeRepo;
 import telran.probes.service.SensorRangeProviderService;
@@ -22,7 +23,8 @@ class SensorRangeProviderServiceTest {
 
 	@Test
 	void getSensorRange_normalFlow_success() {
-		rangeRepo.insert(new RangeDoc(0, 100, 200));
+		RangeDoc rangeDoc = new RangeDoc(new SensorRange(0, new Range(100, 200)));
+		rangeRepo.insert(rangeDoc);
 		assertEquals(new Range(100, 200), providerService.getSensorRange(0));
 	}
 

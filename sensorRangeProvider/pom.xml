@@ -7,7 +7,7 @@
 		<artifactId>probes-monitoring</artifactId>
 		<version>0.0.1</version>
 	</parent>
-	<artifactId>SensorRangeProvider</artifactId>	
+	<artifactId>sensorRangeProvider</artifactId>	
 	<dependencies>		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

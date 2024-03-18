@@ -6,21 +6,20 @@ import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import telran.probes.dto.DeviationData;
 
 import telran.probes.service.EmailsProviderClientService;
 
-@RequiredArgsConstructor
 @Slf4j
 @SpringBootApplication
 public class EmailNotifierAppl {
@@ -28,8 +27,11 @@ public class EmailNotifierAppl {
 	@Value("${app.mail.notifier.subject:deviation of sensor}")
 	private String subject;
 
-	final JavaMailSender mailSender;
-	final EmailsProviderClientService providerService;
+	@Autowired
+	JavaMailSender mailSender;
+
+	@Autowired
+	EmailsProviderClientService providerService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(EmailNotifierAppl.class, args);

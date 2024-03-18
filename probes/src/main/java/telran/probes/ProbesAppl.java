@@ -3,19 +3,17 @@ package telran.probes;
 import java.util.function.Supplier;
 
 import org.springframework.boot.SpringApplication;
-
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import telran.probes.service.ProbesService;
 import telran.probes.dto.ProbeData;
 
-@Configuration
+@SpringBootApplication
 @Slf4j
 @RequiredArgsConstructor
 @ComponentScan(basePackages = "telran")
@@ -32,7 +30,7 @@ public class ProbesAppl {
 	@Bean
 	Supplier<ProbeData> probesSupplier() {
 		return this::probeGeneration;
-	}	
+	}
 
 	private ProbeData probeGeneration() {
 		return getProbeData();

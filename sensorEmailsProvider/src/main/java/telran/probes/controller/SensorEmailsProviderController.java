@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import telran.probes.UrlConstants;
 import telran.probes.service.SensorEmailsProviderService;
 import static telran.probes.UrlConstants.*;
 
@@ -19,10 +20,12 @@ public class SensorEmailsProviderController {
 
 	@GetMapping(SENSOR_EMAILS + "/{" + PROBE_ID + "}")
 	String[] getEmailsForSensor(@PathVariable(PROBE_ID) long sensorId) {
-		log.debug("--- Debug SensorEmailsProviderController -> getEmailsForSensor for probe {}", sensorId);
+		log.debug("--- Debug {} -> getEmailsForSensor for probe {}", getCN(this) , sensorId);
 		String[] res = providerService.getSensorEmails(sensorId);
-		log.debug("--- Debug SensorEmailsProviderController -> res {}", Arrays.asList(res) );
+		log.debug("--- Debug {} -> res {}", getCN(this) , Arrays.asList(res));
 		return res;
 
 	}
+
+	
 }

@@ -3,8 +3,9 @@ package telran.probes;
 import java.util.function.Consumer;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import telran.probes.dto.ProbeData;
 import telran.probes.model.ProbeDataDoc;
 
-@Configuration
+@SpringBootApplication
 @RequiredArgsConstructor
 @Slf4j
 public class AvgPopulatorAppl {

@@ -32,7 +32,7 @@ class EmailNotifierServiceTest {
 	private static final long SENSOR_ID_UNAVAILABLE = 170;
 
 	private static final String[] EMAILS = { "mail1.gmail.com", "mail2.gmail.com" };
-	private static final String URL = "http://localhost:8580/emails/sensor/";
+	private static final String URL = "http://localhost:8580/sensor/emails/";
 	private static final String SENSOR_NOT_FOUND_MESSAGE = "sensor not found";
 
 	private static final String[] EMAILS_DEFAULT = { EmailsProviderClientService.SERVICE_EMAIL };

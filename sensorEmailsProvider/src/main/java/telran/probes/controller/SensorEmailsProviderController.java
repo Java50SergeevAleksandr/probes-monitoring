@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import telran.probes.UrlConstants;
 import telran.probes.service.SensorEmailsProviderService;
 import static telran.probes.UrlConstants.*;
 

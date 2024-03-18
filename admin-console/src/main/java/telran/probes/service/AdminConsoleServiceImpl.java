@@ -1,5 +1,7 @@
 package telran.probes.service;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import telran.probes.dto.SensorEmails;
 import telran.probes.dto.SensorRange;
+import telran.probes.dto.SensorUpdateData;
 import telran.probes.exceptions.SensorIllegalStateException;
 import telran.probes.exceptions.SensorNotFoundException;
 import telran.probes.model.EmailsDoc;
@@ -27,9 +30,14 @@ public class AdminConsoleServiceImpl implements AdminConsoleService {
 	final SensorEmailsRepo emailsRepo;
 	final SensorRangesRepo rangesRepo;
 	final MongoTemplate mongoTemplate;
+	final StreamBridge streamBridge;
+	
+	@Value("${app.update.data.binding.name}")
+	String bindingName;
 	
 	String collectionNameRanges = "sensor_ranges";
 	String collectionNameMails = "sensor_emails";
+	
 	
 	FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(false);
 
@@ -62,6 +70,11 @@ public class AdminConsoleServiceImpl implements AdminConsoleService {
 
 		log.debug("--- Debug AdminConsoleServiceImpl -> Sensor range {} has been updated for sensor with id: {}",
 				sensorRange, id);
+		
+		SensorUpdateData updateData = new SensorUpdateData(id, sensorRange.range(), null);
+		streamBridge.send(bindingName, updateData);
+		log.debug("--- Debug AdminConsoleServiceImpl -> update data {} have been sent to binding name {}", updateData, bindingName);
+		
 		return new SensorRange(id, rangeDoc.getRange());
 	}
 
@@ -95,6 +108,11 @@ public class AdminConsoleServiceImpl implements AdminConsoleService {
 
 		log.debug("--- Debug AdminConsoleServiceImpl -> Sensor emails: {} has been updated for sensor with id: {}",
 				sensorEmails, id);
+		
+		SensorUpdateData updateData = new SensorUpdateData(id, null, sensorEmails.mails());
+		streamBridge.send(bindingName, updateData);
+		log.debug("--- Debug AdminConsoleServiceImpl -> update data {} have been sent to binding name {}", updateData, bindingName);
+		
 		return new SensorEmails(id, emailsDoc.getMails());
 	}
 

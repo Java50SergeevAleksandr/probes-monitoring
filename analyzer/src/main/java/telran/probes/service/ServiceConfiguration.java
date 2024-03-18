@@ -13,10 +13,10 @@ public class ServiceConfiguration {
 	@Value("${app.range.provider.host:localhost}")
 	String host;
 	
-	@Value("${app.range.provider.port:8282}")
+	@Value("${app.range.provider.port}")
 	int port;
 	
-	@Value("${app.range.provider.path:/range/sensor/}")
+	@Value("${app.range.provider.path:/sensor/range/}")
 	String path;
 
 	@Bean

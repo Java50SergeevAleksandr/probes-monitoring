@@ -1,7 +1,7 @@
 package telran.probes.service;
 
 public interface EmailsProviderClientService {
-	String SERVICE_EMAIL = "admin-sensors@gmail.com";
+	String SERVICE_EMAIL = "${ACC_NAME}";
 
 	String[] getMails(long sensorId);
 }

@@ -38,7 +38,7 @@ class EmailNotifierControllerTest {
 	private static final String MAIL2 = "test@co.il";
 	private static final String MAIL3 = "test1@co.il";
 
-	@Value("${app.mail.notifier.subject:deviation of sensor}")
+	@Value("${app.emails.notifier.subject:deviation of sensor }")
 	private String subject;
 
 	@Autowired
@@ -75,8 +75,9 @@ class EmailNotifierControllerTest {
 		String[] actualMails = Arrays.stream(recipients).map(Address::toString).toArray(String[]::new);
 
 		assertArrayEquals(emails, actualMails);
+		log.debug("--- EmailNotifierControllerTest -> content: {}, subject: {}", message.getContent() , message.getSubject());
 		assertTrue(message.getSubject().contains(subject + SENSOR_ID));
-		log.debug("--- EmailNotifierControllerTest -> content: {}", message.getContent());
+		
 
 	}
 

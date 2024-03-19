@@ -10,7 +10,7 @@ import lombok.Getter;
 @Configuration
 @Getter
 public class ServiceConfiguration {
-	@Value("${app.range.provider.host:localhost}")
+	@Value("${app.range.provider.host}")
 	String host;
 	
 	@Value("${app.range.provider.port}")

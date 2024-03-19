@@ -32,7 +32,7 @@ class AnalyzerServiceTest {
 	private static final double MIN_VALUE = 100;
 	private static final double MAX_VALUE = 200;
 
-	private static final String URL = "http://localhost:8282/range/sensor/";
+	private static final String URL = "http://localhost:8282/sensor/range/";
 	private static final String SENSOR_NOT_FOUND_MESSAGE = "sensor not found";
 
 	private static final long SENSOR_ID_NOT_FOUND = 124;

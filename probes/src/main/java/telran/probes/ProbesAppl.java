@@ -2,6 +2,7 @@ package telran.probes;
 
 import java.util.function.Supplier;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -19,7 +20,9 @@ import telran.probes.dto.ProbeData;
 @ComponentScan(basePackages = "telran")
 public class ProbesAppl {
 	final ProbesService probesService;
-	private static final long TIMEOUT = 10000;
+
+	@Value("${app.probes.sleep.timeout:10000}")
+	private static long TIMEOUT;
 
 	public static void main(String[] args) throws InterruptedException {
 		ConfigurableApplicationContext ctx = SpringApplication.run(ProbesAppl.class, args);

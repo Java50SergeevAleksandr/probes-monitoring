@@ -35,8 +35,8 @@ public class AdminConsoleServiceImpl implements AdminConsoleService {
 	@Value("${app.update.data.binding.name}")
 	String bindingName;
 	
-	String collectionNameRanges = "sensor_ranges";
-	String collectionNameMails = "sensor_emails";
+	String collectionNameRanges = "ranges";
+	String collectionNameMails = "emails";
 	
 	
 	FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(false);

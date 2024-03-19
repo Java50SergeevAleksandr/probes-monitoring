@@ -16,7 +16,7 @@ public class ServiceConfiguration {
 	@Value("${app.emails.provider.port}")
 	int port;
 
-	@Value("${app.emails.provider.path:/sensor/emails/}")
+	@Value("${app.emails.provider.path}")
 	String path;
 
 	@Bean

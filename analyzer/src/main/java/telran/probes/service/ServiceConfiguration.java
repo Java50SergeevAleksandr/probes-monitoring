@@ -16,7 +16,7 @@ public class ServiceConfiguration {
 	@Value("${app.range.provider.port}")
 	int port;
 	
-	@Value("${app.range.provider.path:/sensor/range/}")
+	@Value("${app.range.provider.path}")
 	String path;
 
 	@Bean

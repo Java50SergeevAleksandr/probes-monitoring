@@ -16,7 +16,7 @@ import telran.probes.service.SensorRangeProviderService;
 public class SensorRangeProviderController {
 	final SensorRangeProviderService providerService;
 
-	@GetMapping(SENSOR_RANGE + "/{" + PROBE_ID + "}")
+	@GetMapping("${app.range.provider.path}" + "{" + PROBE_ID + "}")
 	Range getRangeForSensor(@PathVariable(PROBE_ID) long sensorId) {
 		log.debug("--- Debug SensorRangeProviderController -> getRangeForSensor for probe {}", sensorId);
 		var res = providerService.getSensorRange(sensorId);

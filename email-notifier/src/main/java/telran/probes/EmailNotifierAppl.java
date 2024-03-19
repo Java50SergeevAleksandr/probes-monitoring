@@ -24,7 +24,7 @@ import telran.probes.service.EmailsProviderClientService;
 @SpringBootApplication
 public class EmailNotifierAppl {
 
-	@Value("${app.mail.notifier.subject:deviation of sensor}")
+	@Value("${app.emails.notifier.subject}")
 	private String subject;
 
 	@Autowired

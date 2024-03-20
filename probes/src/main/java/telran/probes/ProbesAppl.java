@@ -20,11 +20,16 @@ import telran.probes.dto.ProbeData;
 @ComponentScan(basePackages = "telran")
 public class ProbesAppl {
 	final ProbesService probesService;
-
-	@Value("${app.probes.sleep.timeout:10000}")
 	private static long TIMEOUT;
 
+	@SuppressWarnings("static-access")
+	@Value("${app.probes.sleep.timeout:10000}")
+	private void setTimeout(long timeout) {
+		this.TIMEOUT = timeout;
+	}
+
 	public static void main(String[] args) throws InterruptedException {
+
 		ConfigurableApplicationContext ctx = SpringApplication.run(ProbesAppl.class, args);
 		Thread.sleep(TIMEOUT);
 		ctx.close();

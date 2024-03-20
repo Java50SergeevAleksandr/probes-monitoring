@@ -9,10 +9,12 @@ import org.springframework.data.redis.core.RedisHash;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @RedisHash
 @RequiredArgsConstructor
 @Getter
+@ToString
 public class ProbesList {
 	@Id
 	@NonNull

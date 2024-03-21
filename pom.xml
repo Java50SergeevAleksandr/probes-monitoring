@@ -65,12 +65,7 @@
 			<groupId>telran.probes</groupId>
 			<artifactId>probes-api</artifactId>
 			<version>0.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>telran.probes</groupId>
-			<artifactId>probes-exceptionsHandler</artifactId>
-			<version>0.0.1</version>
-		</dependency>
+		</dependency>		
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>

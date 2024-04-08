@@ -10,9 +10,7 @@ services:
                memory: 300M
             reservations:
                cpus: '0.3'
-               memory: 250M
-      ports:
-         - 8888:8888             
+               memory: 250M                 
    sensor-emails-provider:
       build:
          sensorEmailsProvider
@@ -25,9 +23,7 @@ services:
                cpus: '0.3'
                memory: 250M 
       environment:
-         - MONGO_PASSWORD=${MONGO_PASSWORD}
-      ports:
-         - 8686:8686         
+         - MONGO_PASSWORD=${MONGO_PASSWORD}      
    sensor-range-provider:
       build:
          sensorRangeProvider
@@ -54,9 +50,7 @@ services:
                memory: 250M
       environment:
          - MONGO_PASSWORD=${MONGO_PASSWORD}
-         - KAFKA_API_SECRET=${KAFKA_API_SECRET}
-      ports:
-      - 8787:8787
+         - KAFKA_API_SECRET=${KAFKA_API_SECRET}     
    analyzer:
       build:
          analyzer

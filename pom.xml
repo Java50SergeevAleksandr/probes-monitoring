@@ -106,5 +106,6 @@
 		<module>avg-reducer</module>
 		<module>probes</module>
 		<module>config-server</module>
+		<module>gateway</module>
 	</modules>
 </project>

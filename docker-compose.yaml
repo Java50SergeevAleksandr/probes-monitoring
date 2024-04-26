@@ -10,7 +10,20 @@ services:
                memory: 300M
             reservations:
                cpus: '0.3'
-               memory: 250M                 
+               memory: 250M
+   accounts-provider:
+      build:
+         account-provider
+      deploy:
+         resources:
+            limits:
+               cpus: '0.5'
+               memory: 300M
+            reservations:
+               cpus: '0.3'
+               memory: 250M 
+      environment:
+         - MONGO_PASSWORD=${MONGO_PASSWORD}                              
    sensor-emails-provider:
       build:
          sensorEmailsProvider
@@ -107,3 +120,16 @@ services:
          - KAFKA_API_SECRET=${KAFKA_API_SECRET}
          - MAIL_PASSWORD=${MAIL_PASSWORD}
          - ACC_NAME=${ACC_NAME}
+   gateway:
+      build:
+         gateway
+      deploy:
+         resources:
+            limits:
+               cpus: '0.5'
+               memory: 300M
+            reservations:
+               cpus: '0.3'
+               memory: 250M 
+      ports:
+      - 9595:9595        

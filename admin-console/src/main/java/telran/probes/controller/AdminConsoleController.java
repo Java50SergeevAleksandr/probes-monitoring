@@ -19,19 +19,19 @@ import telran.probes.service.AdminConsoleService;
 public class AdminConsoleController {
 	final AdminConsoleService service;
 
-	@PostMapping(SENSOR_RANGE)
+	@PostMapping("${app.admin.range.urn}")
 	SensorRange addSensorRange(@RequestBody @Valid SensorRange sensorRange) {
 		log.debug("--- Debug AdminConsoleServiceImpl -> addSensorRange: received sensorRange: {}", sensorRange);
 		return service.addSensorRange(sensorRange);
 	}
 
-	@PutMapping(SENSOR_RANGE)
+	@PutMapping("${app.admin.range.urn}")
 	SensorRange updateSensorRange(@RequestBody @Valid SensorRange sensorRange) {
 		log.debug("--- Debug AdminConsoleServiceImpl -> updateSensorRange: received sensorRange: {}", sensorRange);
 		return service.updateSensorRange(sensorRange);
 	}
 
-	@PostMapping(SENSOR_EMAILS)
+	@PostMapping("${app.admin.emails.urn}")
 	SensorEmails addSensorEmails(@RequestBody @Valid SensorEmails sensorEmails) {
 		log.debug("--- Debug AdminConsoleServiceImpl -> addSensorEmails: received sensorEmails: {}", sensorEmails);
 		return service.addSensorEmails(sensorEmails);

@@ -34,9 +34,9 @@ public class ProxyServiceImpl implements ProxyService {
 
 	private String getRoutedUrl(HttpServletRequest request) {
 		String resourceName = request.getRequestURI(); // example: /range/sensor/123
-		log.debug("resource name: {}", resourceName);
+		log.debug("---> resource name: {}", resourceName);
 		String firstPart = resourceName.split("/")[1]; // example: range
-		log.debug("first name part is {}", firstPart);
+		log.debug("---> first name part is {}", firstPart);
 		String hostPort = routingMap.get(firstPart);
 
 		return String.format("http://%s%s", hostPort, resourceName);
@@ -44,7 +44,7 @@ public class ProxyServiceImpl implements ProxyService {
 
 	@PostConstruct
 	void logRoutingMap() {
-		log.debug("routing map is {}", routingMap);
+		log.debug("---> routing map is {}", routingMap);
 	}
 
 }

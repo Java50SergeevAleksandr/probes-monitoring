@@ -62,8 +62,8 @@ public class SecurityConfiguration {
 		httpSecurity.authorizeHttpRequests(customizer -> customizer.requestMatchers(adminRangeUrn + "/**")
 				.hasRole(adminRangeRole)
 				.requestMatchers(adminEmailsUrn + "/**").hasRole(adminNotifierRole)
-				.requestMatchers(rangeSensorUrn + "/**").hasRole(userRangeRole)
-				.requestMatchers(emailsSensorUrn + "/**").hasRole(userNotifierRole)
+				.requestMatchers(rangeSensorUrn + "**").hasRole(userRangeRole)
+				.requestMatchers(emailsSensorUrn + "**").hasRole(userNotifierRole)
 				.requestMatchers(accountsUrn + "/**").hasRole(userAccountsRole));
 		httpSecurity.sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
 		httpSecurity.httpBasic(Customizer.withDefaults());

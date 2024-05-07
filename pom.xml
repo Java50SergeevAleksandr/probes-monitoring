@@ -109,5 +109,6 @@
 		<module>config-server</module>
 		<module>gateway</module>
 		<module>account-provider</module>
+		<module>aws-sns-notifier</module>
 	</modules>
 </project>

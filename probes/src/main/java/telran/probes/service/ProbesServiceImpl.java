@@ -77,6 +77,7 @@ public class ProbesServiceImpl implements ProbesService {
 		}
 
 		rangesMap = documents.stream().collect(Collectors.toMap(d -> d.getSensorId(), d -> d.getRange()));
+		rangesMap.put(404l, new Range(100, 200));
 		log.trace("--- Trace ProbesServiceImpl -> Map of ranges is {}", rangesMap);
 
 		idSet = rangesMap.keySet().stream().mapToLong(v -> v).toArray();

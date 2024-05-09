@@ -47,12 +47,6 @@ public class RangeProviderClientServiceImpl implements RangeProviderClientServic
 	public Range getRange(long sensorId) {
 		Range range = cashe.computeIfAbsent(sensorId, id -> serviceRequest(sensorId));
 		log.debug("--- Debug RangeProviderClientServiceImpl -> range value in cashe map: {}", range);
-
-		if (range == null) {
-			range = new Range(MIN_DEFAULT_VALUE, MAX_DEFAULT_VALUE);
-			log.warn("--- Debug RangeProviderClientServiceImpl -> set default range value: {}", range);
-		}
-
 		return range;
 	}
 

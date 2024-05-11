@@ -3,6 +3,7 @@ package telran.probes;
 import java.util.*;
 import java.util.function.Consumer;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,7 @@ import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.PutItemSpec;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import telran.probes.dto.ProbeData;
@@ -27,6 +29,12 @@ import telran.probes.model.ProbeDataDoc;
 @Slf4j
 public class AvgPopulatorAppl {
 	final MongoTemplate mongoTemplate;
+	AmazonDynamoDB client;
+	DynamoDB dynamo;
+	Table table;
+
+	@Value("${app.aws.dynamo.table:avg_values}")
+	String tableName;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AvgPopulatorAppl.class, args);
@@ -42,9 +50,6 @@ public class AvgPopulatorAppl {
 		ProbeDataDoc savedDoc = mongoTemplate.insert(new ProbeDataDoc(probeData));
 		log.debug("--- Debug AvgPopulatorAppl -> Document {} has been saved to MongoDB", savedDoc);
 
-		AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
-		DynamoDB dynamo = new DynamoDB(client);
-		Table table = dynamo.getTable("avg_values");
 		Map<String, Object> map = getMap(probeData);
 		table.putItem(new PutItemSpec().withItem(Item.fromMap(map)));
 		log.debug("--- Debug AvgPopulatorAppl -> Document {} has been saved to DynamoDB", map);
@@ -56,5 +61,12 @@ public class AvgPopulatorAppl {
 		res.put("timestamp", probeData.timestamp());
 		res.put("value", probeData.value());
 		return res;
+	}
+
+	@PostConstruct
+	void setDynamoDB() {
+		client = AmazonDynamoDBClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
+		dynamo = new DynamoDB(client);
+		table = dynamo.getTable(tableName);
 	}
 }

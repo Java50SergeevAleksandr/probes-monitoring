@@ -11,6 +11,7 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClient;
 
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import telran.probes.dto.DeviationData;
 
@@ -24,6 +25,11 @@ public class AwsSnsNotifier {
 	@Value("${app.emails.notifier.subject}")
 	private String subjectName;
 
+	@Value("${app.aws.sns.region:us-east-1}")
+	String awsRegion;
+
+	AmazonSNS client;
+
 	public static void main(String[] args) {
 		SpringApplication.run(AwsSnsNotifier.class, args);
 
@@ -36,7 +42,7 @@ public class AwsSnsNotifier {
 
 	void sendingMail(DeviationData deviation) {
 		log.debug("---> Received deviation data: {}", deviation);
-		AmazonSNS client = AmazonSNSClient.builder().withRegion(Regions.US_EAST_1).build();
+
 		long sensorId = deviation.id();
 		String topicArn = getTopicArn(sensorId);
 		log.debug("---> topic is: {}", topicArn);
@@ -55,4 +61,10 @@ public class AwsSnsNotifier {
 	private String getTopicArn(long sensorId) {
 		return arn + ":sensor-" + sensorId;
 	}
+
+	@PostConstruct
+	void setSnsClient() {
+		client = AmazonSNSClient.builder().withRegion(awsRegion).build();
+	}
+
 }
